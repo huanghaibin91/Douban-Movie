@@ -1,0 +1,4 @@
+
+const router =  new VueRouter({
+    
+});
