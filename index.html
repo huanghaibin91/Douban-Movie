@@ -13,23 +13,39 @@
     <script src="https://cdn.staticfile.org/vue/2.2.6/vue.min.js"></script>
     <script src="https://cdn.staticfile.org/vuex/2.3.0/vuex.min.js"></script>
     <script src="https://cdn.staticfile.org/vue-router/2.4.0/vue-router.min.js"></script>
-    <script src="https://unpkg.com/mint-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/mint-ui/lib/index.js"></script>  
 </head>
 
 <body>
     <!-- 页面主体 -->
-    <div id="app">
+    <div id="app" @click="hello">
         <mt-header title="">
             <span slot="left">
                 豆瓣电影
             </span>
             <mt-button icon="search" slot="right"></mt-button>
         </mt-header>
+        <div class="in-theaters">
+            <h3>院线热映</h3>
+            <a href="">更多</a>
+        </div>
         <mt-swipe :auto="4000"> 
-            <mt-swipe-item>1</mt-swipe-item> 
-            <mt-swipe-item>2</mt-swipe-item> 
-            <mt-swipe-item>3</mt-swipe-item> 
+            <mt-swipe-item v-for="movie in banners">
+                <div class="left">
+                    <img :src="movie.images.medium" :alt="movie.title">
+                </div>
+                <div class="right">
+                    片名：{{ movie.title}}
+                    评分：{{ movie.rating.average }}
+                    导演：{{ movie.directors[0].name }}
+                    类型：{{ movie.genres.join('/') }}
+                    <!-- 主演：{{ movie.casts[0].name}} -->
+                </div>
+            </mt-swipe-item> 
         </mt-swipe>
+        <div class="">
+
+        </div>
     </div>
     <!-- script -->
     <script src="./js/components.js"></script>
