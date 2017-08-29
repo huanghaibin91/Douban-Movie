@@ -1,3 +1,65 @@
-.mint-swipe {
-    height: 30vh;
+
+.in-theaters-title,
+.coming-soon-title {
+    display: flex;
+    align-items: center;
+}
+.in-theaters-title h4,
+ .in-theaters-title a,
+ .coming-soon-title h4,
+ .coming-soon-title a {
+    display: block;
+    width: 50%;
+}
+.in-theaters-title a,
+.coming-soon-title a {
+    text-align: right;
+}
+.swipe-box {
+    width: 100%;
+    height: 250px;
+}
+.swipe-item {
+    display: flex;
+}
+.swipe-item-left, .swipe-item-right {
+    width: 50%;
+    height: 100%;
+}
+.swipe-item-left {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.swipe-item-left img {
+    width: 80%;
+    height: 80%;
+}
+.in-theaters,
+.coming-soon {
+    display: flex;
+    flex-wrap: wrap;
+}
+.in-theaters>div,
+.coming-soon>div {
+    width: 50%;
+    text-align: center;
+}
+.in-theaters>div p,
+.coming-soon>div p {
+    text-align: center;
+}
+.search .search-input .mint-search {
+    height: 100%;
+}
+.tag-box {
+    display: flex;
+    flex-wrap: wrap;
+}
+.tag {
+    width: 50%;
+}
+.tag button {
+    margin: 2vh;
+    width: 80%;
 }
