@@ -36,6 +36,15 @@ new Vue({
     data: {
         
     },
+    store,
+    router,
+    components: {
+        'home': home,
+        'search': search,
+        'movie': movie,
+        'person': person,
+        'list': list
+    },
     methods: {
         hello: function () {
             console.log('测试');

@@ -1,6 +1,6 @@
 
 // 首页
-Vue.component('home', {
+var home = {
     template: `
         <div class="home">
             <mt-header title="">
@@ -76,10 +76,10 @@ Vue.component('home', {
             }
         });
     },
-});
+};
 
 // 搜索页
-Vue.component('search', {
+var search = {
     template: `
         <div class="search">
             <div class="search-input">
@@ -99,10 +99,10 @@ Vue.component('search', {
             '治愈', '文艺', '成长', '动画 ', '华语', '欧美', '韩国', '日本'],
         }
     }
-});
+};
 
 // 电影详情页
-Vue.component('movie', {
+var movie = {
     template: `
         <div class="movie">
             <mt-header :title="movie.title">
@@ -155,10 +155,10 @@ Vue.component('movie', {
             }
         });
     }
-});
+};
 
 // 影人详情页
-Vue.component('person', {
+var person = {
     template: `
         <div class="person">
             <mt-header :title="person.name">
@@ -200,10 +200,10 @@ Vue.component('person', {
             } 
         });
     }
-});
+};
 
 // 搜索结果列表
-Vue.component('list', {
+var list = {
     template: `
         <div class="list">
             <mt-header :title="电影列表">
@@ -220,4 +220,13 @@ Vue.component('list', {
             </div>
         </div>
     `,
-});
+};
+
+// 我的详情页
+var me = {
+    template: `
+        <div class="me">
+            
+        </div>
+    `,
+}
