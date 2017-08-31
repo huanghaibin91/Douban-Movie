@@ -1748,7 +1748,8 @@
 }
 
 .mint-swipe-indicator.is-active {
-    background: #fff;
+    background: #000;
+    opacity: 0.6;
 }
 
 .mt-range {

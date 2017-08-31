@@ -7,42 +7,49 @@ var home = {
                 <mt-button slot="left">豆瓣电影</mt-button>
                 <mt-button icon="search" slot="right"></mt-button>
             </mt-header> 
-            <div class="in-theaters-title">
-                <h4>正在热映</h4>
+            <div class="list-title">
+                <h3>正在热映</h3>
                 <a>更多<a>
             </div>
             <div class="swipe-box">
-                <mt-swipe :auto="4000">
+                <mt-swipe :auto="0">
                     <mt-swipe-item v-for="movie in banners">
-                        <div class="swipe-item">
-                            <div class="swipe-item-left">
-                                <img :src="movie.images.medium" :alt="movie.title">
+                        <div class="movie-banner">
+                            <div class="movie-banner-left">
+                                <img :src="movie.images.large" :alt="movie.title">
                             </div>
-                            <div class="swipe-item-right">
-                                <p>片名：{{ movie.title}}</p>
+                            <div class="movie-banner-right">
+                                <p>{{ movie.title }}</p>
                                 <p>评分：<span>{{ movie.rating.average }}</sapn></p>
                                 <p>导演：{{ movie.directors[0].name }}</p>
                                 <p>类型：<span>{{ movie.genres.join('/') }}</sapn></p>
-                                <p>主演：<span>{{ movie.casts[0].name}}</span></p>
                             </div>
                         </div>
                     </mt-swipe-item>
                 </mt-swipe>
             </div>
-            <div class="in-theaters">
-                <div class="in-theaters-movie" v-for="movie in in_theaters">
+            <div class="movie-list">
+                <div class="movie-list-box" v-for="movie in in_theaters">
                     <img :src="movie.images.medium" :alt="movie.title">
-                    <p>{{ movie.title}}</p>
+                    <p>{{ movie.title }}</p>
+                    <p>
+                        <span class="star-yellow" v-for="index in Math.round(movie.rating.average / 2)"></span>
+                        <span class="star-white" v-for="index in (5 - Math.round(movie.rating.average / 2))"></span>
+                    </p>
                 </div>
             </div>
-            <div class="coming-soon-title">
-                <h4>即将上映</h4>
+            <div class="list-title">
+                <h3>即将上映</h3>
                 <a>更多<a>
             </div>
-            <div class="coming-soon">
-                <div class="coming-soon-movie" v-for="movie in coming_soon">
+            <div class="movie-list">
+                <div class="movie-list-box" v-for="movie in coming_soon">
                     <img :src="movie.images.medium" :alt="movie.title">
                     <p>{{ movie.title}}</p>
+                    <p>
+                        <span class="star-yellow" v-for="index in Math.round(movie.rating.average / 2)"></span>
+                        <span class="star-white" v-for="index in (5 - Math.round(movie.rating.average / 2))"></span>
+                    </p>
                 </div>
             </div>
             <mt-header title="Writed By Huang Haibin"></mt-header> 
@@ -109,11 +116,11 @@ var movie = {
                 <mt-button icon="back" slot="left">返回</mt-button>
                 <mt-button icon="more" slot="right"></mt-button>
             </mt-header> 
-            <div class="movie-title">
-                <div class="movie-title-left">
-                    <img :src="movie.images.medium" :alt="movie.title">
+            <div class="movie-banner">
+                <div class="movie-banner-left">
+                    <img :src="movie.images.large" :alt="movie.title">
                 </div>
-                <div class="movie-title-right">
+                <div class="movie-banner-right">
                     <p>片名：{{ movie.title}}</p>
                     <p>评分：<span>{{ movie.rating.average }}</sapn></p>
                     <p>导演：{{ movie.directors[0].name }}</p>
@@ -215,6 +222,10 @@ var list = {
                     <div class="coming-soon-movie" v-for="movie in coming_soon">
                         <img :src="movie.images.medium" :alt="movie.title">
                         <p>{{ movie.title}}</p>
+                        <p>
+                            <span class="star-yellow" v-for="index in Math.round(movie.rating.average / 2)"></span>
+                            <span class="star-white" v-for="index in (5 - Math.round(movie.rating.average / 2))"></span>
+                        </p>
                     </div>
                 <div>
             </div>

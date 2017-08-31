@@ -1,53 +1,77 @@
+/* 评分 */
+.star-yellow, .star-white {
+    display: inline-block;
+    width: 0.8em;
+    height: 0.8em;
+    margin: 0.1em;
+}
+.star-yellow {
+    background: url("../images/star-yellow.png") no-repeat center;
+    background-size: cover;
+}
+.star-white {
+    background: url("../images/star-white.png") no-repeat center;
+    background-size: cover;
+}
 
-.in-theaters-title,
-.coming-soon-title {
+.list-title{
     display: flex;
     align-items: center;
 }
-.in-theaters-title h4,
- .in-theaters-title a,
- .coming-soon-title h4,
- .coming-soon-title a {
+.list-title h3,
+.list-title a {
     display: block;
     width: 50%;
 }
-.in-theaters-title a,
-.coming-soon-title a {
+.ilist-title h3 {
+    padding-left: 1em;
+    letter-spacing: 0.1em;
+}
+.list-title a {
     text-align: right;
+    padding-right: 1em;
+    color: #42bd56;
+    font-size: 0.8em;
 }
 .swipe-box {
     width: 100%;
     height: 250px;
 }
-.swipe-item {
+.movie-banner {
     display: flex;
 }
-.swipe-item-left, .swipe-item-right {
+.movie-banner-left, .movie-banner-right {
     width: 50%;
     height: 100%;
 }
-.swipe-item-left {
+.movie-banner-left {
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.swipe-item-left img {
+.movie-banner-left img {
     width: 80%;
     height: 80%;
 }
-.in-theaters,
-.coming-soon {
+.movie-banner-right p:first-child {
+    font-size: 20px;
+    font-weight: bold;
+    letter-spacing: 0.15em;
+}
+.movie-banner-right p:nth-child(2) span {
+    color: #F05522;
+}
+.movie-list {
     display: flex;
     flex-wrap: wrap;
 }
-.in-theaters>div,
-.coming-soon>div {
+.movie-list>div {
     width: 50%;
     text-align: center;
 }
-.in-theaters>div p,
-.coming-soon>div p {
+.movie-list>div p {
     text-align: center;
+    font-size: 0.8em;
 }
 .search .search-input .mint-search {
     height: 100%;
