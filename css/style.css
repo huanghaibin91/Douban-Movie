@@ -26,6 +26,7 @@
 .ilist-title h3 {
     padding-left: 1em;
     letter-spacing: 0.1em;
+    font-weight: normal;
 }
 .list-title a {
     text-align: right;

@@ -1731,7 +1731,7 @@
 
 .mint-swipe-indicators {
     position: absolute;
-    bottom: 10px;
+    bottom: 0px;
     left: 50%;
     -webkit-transform: translateX(-50%);
     transform: translateX(-50%);

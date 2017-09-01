@@ -1,3 +1,14 @@
+// 页脚 
+var footer = {
+    template: `
+        <footer>
+            <a href="https://github.com/huanghaibin91">
+                <img :src="../images/GitHub.png" />
+            </a>        
+            <span>https://github.com/huanghaibin91</span>
+        </footer>
+    `,
+};
 
 // 首页
 var home = {
@@ -52,7 +63,6 @@ var home = {
                     </p>
                 </div>
             </div>
-            <mt-header title="Writed By Huang Haibin"></mt-header> 
         </div>
     `,
     data: function () {
@@ -67,13 +77,13 @@ var home = {
         this.$jsonp({
             url: 'https://api.douban.com/v2/movie/in_theaters',
             callback: function (response) {
-                that.banners = response.subjects.slice(0, 5);
+                that.banners = response.subjects.slice(0, 4);
             }
         });
         this.$jsonp({
             url: 'https://api.douban.com/v2/movie/in_theaters',
             callback: function (response) {
-                that.in_theaters = response.subjects.slice(5);
+                that.in_theaters = response.subjects.slice(4);
             }
         });
         this.$jsonp({
@@ -121,9 +131,9 @@ var movie = {
                     <img :src="movie.images.large" :alt="movie.title">
                 </div>
                 <div class="movie-banner-right">
-                    <p>片名：{{ movie.title}}</p>
+                    <p>{{ movie.title}}</p>
                     <p>评分：<span>{{ movie.rating.average }}</sapn></p>
-                    <p>导演：{{ movie.directors[0].name }}</p>
+                    <p>导演：<span>{{ movie.directors[0].name }}</span></p>
                     <p>类型：<span>{{ movie.genres.join('/') }}</sapn></p>
                     <p>主演：<span>{{ movie.casts[0].name}}</span></p>
                 </div>

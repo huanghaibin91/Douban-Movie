@@ -43,7 +43,8 @@ new Vue({
         'search': search,
         'movie': movie,
         'person': person,
-        'list': list
+        'list': list,
+        'my-footer': footer
     },
     methods: {
         hello: function () {
