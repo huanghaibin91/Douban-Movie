@@ -2,10 +2,7 @@
 var footer = {
     template: `
         <footer>
-            <a href="https://github.com/huanghaibin91">
-                <img :src="../images/GitHub.png" />
-            </a>        
-            <span>https://github.com/huanghaibin91</span>
+            <a href="https://github.com/huanghaibin91">GitHub</a>
         </footer>
     `,
 };
@@ -14,16 +11,16 @@ var footer = {
 var home = {
     template: `
         <div class="home">
-            <mt-header title="">
-                <mt-button slot="left">豆瓣电影</mt-button>
-                <mt-button icon="search" slot="right"></mt-button>
-            </mt-header> 
+            <div class="header">
+                <a class="logo">豆瓣电影</a>
+                <router-link to="/search" class="search-icon">电影搜索</router-link>
+            </div> 
             <div class="list-title">
-                <h3>正在热映</h3>
-                <a>更多<a>
+                <p>正在热映</p>
+                <router-link to="/list">更多</router-link>
             </div>
             <div class="swipe-box">
-                <mt-swipe :auto="0">
+                <mt-swipe :auto="4000">
                     <mt-swipe-item v-for="movie in banners">
                         <div class="movie-banner">
                             <div class="movie-banner-left">
@@ -40,28 +37,28 @@ var home = {
                 </mt-swipe>
             </div>
             <div class="movie-list">
-                <div class="movie-list-box" v-for="movie in in_theaters">
+                <router-link tag="div" to="/movie" class="movie-list-box" v-for="movie in in_theaters">
                     <img :src="movie.images.medium" :alt="movie.title">
                     <p>{{ movie.title }}</p>
                     <p>
                         <span class="star-yellow" v-for="index in Math.round(movie.rating.average / 2)"></span>
                         <span class="star-white" v-for="index in (5 - Math.round(movie.rating.average / 2))"></span>
                     </p>
-                </div>
+                </router-link>
             </div>
             <div class="list-title">
-                <h3>即将上映</h3>
-                <a>更多<a>
+                <p>即将上映</p>
+                <router-link to="/list">更多</router-link>
             </div>
             <div class="movie-list">
-                <div class="movie-list-box" v-for="movie in coming_soon">
+                <router-link tag="div" to="/movie" class="movie-list-box" v-for="movie in coming_soon">
                     <img :src="movie.images.medium" :alt="movie.title">
                     <p>{{ movie.title}}</p>
                     <p>
                         <span class="star-yellow" v-for="index in Math.round(movie.rating.average / 2)"></span>
                         <span class="star-white" v-for="index in (5 - Math.round(movie.rating.average / 2))"></span>
                     </p>
-                </div>
+                </router-link>
             </div>
         </div>
     `,
@@ -142,20 +139,24 @@ var movie = {
                 <h4>剧情简介</h4>
                 <p>{{ movie.summary }}</p>
             </div>
-            <div class="movie-directors">
+            <router-link tag="div" to="/person" class="movie-directors">
                 <h4>导演</h4>
-                <div v-for="director in movie.directors">
-                    <img :src="director.avatars.medium" :alt="director.name">
-                    <p>{{ director.name }}</p>
+                <div class="movie-list">
+                    <div v-for="director in movie.directors">
+                        <img :src="director.avatars.medium" :alt="director.name">
+                        <p>{{ director.name }}</p>
+                    </div>
                 </div>
-            </div>
-            <div class="movie-casts">
+            </router-link>
+            <router-link tag="div" to="/person" class="movie-casts">
                 <h4>主演</h4>
-                <div v-for="cast in movie.casts">
-                    <img :src="cast.avatars.medium" :alt="cast.name">
-                    <p>{{ cast.name }}</p>
+                <div class="movie-list">
+                    <div class="movie-list-box" v-for="cast in movie.casts">
+                        <img :src="cast.avatars.medium" :alt="cast.name">
+                        <p>{{ cast.name }}</p>
+                    </div>
                 </div>
-            </div>
+            </router-link>
         <div>
     `,
     data: function () {
@@ -182,26 +183,28 @@ var person = {
                 <mt-button icon="back" slot="left">返回</mt-button>
                 <mt-button icon="more" slot="right"></mt-button>
             </mt-header>
-            <div class="person-title">
-                <div class="person-title-left">
+            <div class="movie-banner">
+                <div class="movie-banner-left">
                     <img :src="person.avatars.medium" :alt="person.name">
                 </div>
-                <div class="person-title-right">
-                    <p>中文名：{{ person.name }}</p>
+                <div class="movie-banner-right">
+                    <p>{{ person.name }}</p>
                     <p>英文名：<span>{{ person.name_en }}</sapn></p>
                     <p>性别：{{ person.gender }}</p>
                     <p>出生地：<span>{{ person.born_place }}</sapn></p>
                 </div>
             </div>
             <div class="works-list">
-                <h4>作品列表</h4>
-                <div v-for="work in person.works">
-                    <img :src="work.subject.images.medium" :alt="work.subject.title" />
-                    <p>{{ work.subject.title }}</p>
-                    <p>{{ work.roles[0] }}</p>
-                <div>
+                <h4>个人作品</h4>
+                <router-link tag="div" to="/movie" class="movie-list">
+                    <div class="movie-list-box" v-for="work in person.works">
+                        <img :src="work.subject.images.medium" :alt="work.subject.title" />
+                        <p>{{ work.subject.title }}</p>
+                        <p>{{ work.roles[0] }}</p>
+                    <div>
+                </div>
             </div>
-        </div>
+        </router-link>
     `,
     data: function () {
         return {
@@ -223,24 +226,58 @@ var person = {
 var list = {
     template: `
         <div class="list">
-            <mt-header :title="电影列表">
+            <mt-header title="电影列表">
                 <mt-button icon="back" slot="left">返回</mt-button>
                 <mt-button icon="more" slot="right"></mt-button>
             </mt-header>
-            <div class="all-list">
-                <div>
-                    <div class="coming-soon-movie" v-for="movie in coming_soon">
-                        <img :src="movie.images.medium" :alt="movie.title">
-                        <p>{{ movie.title}}</p>
-                        <p>
-                            <span class="star-yellow" v-for="index in Math.round(movie.rating.average / 2)"></span>
-                            <span class="star-white" v-for="index in (5 - Math.round(movie.rating.average / 2))"></span>
-                        </p>
-                    </div>
-                <div>
+            <div class="movie-list" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
+                <div class="movie-list-box" v-for="movie in movie_list">
+                    <img :src="movie.images.medium" :alt="movie.title">
+                    <p>{{ movie.title}}</p>
+                    <p>
+                        <span class="star-yellow" v-for="index in Math.round(movie.rating.average / 2)"></span>
+                        <span class="star-white" v-for="index in (5 - Math.round(movie.rating.average / 2))"></span>
+                    </p>
+                </div>
             </div>
+            <mt-spinner v-if="load_flag" color="#26a2ff" type="triple-bounce"></mt-spinner>
         </div>
     `,
+    data: function () {
+        return {
+            movie_list: [],
+            start: 20,
+            load_flag: false
+        }
+    },
+    mounted: function () {
+        var that = this;
+        this.$jsonp({
+            url: 'https://api.douban.com/v2/movie/top250',
+            callback: function (response) {
+                that.movie_list = response.subjects;
+            }
+        });
+    },
+    methods: {
+        loadMore: function () {
+            var that = this;
+            this.loading = true;
+            this.load_flag = true;
+            this.$jsonp({
+                url: 'https://api.douban.com/v2/movie/top250',
+                data: {
+                    start: that.start
+                },
+                callback: function (response) {
+                    that.movie_list = that.movie_list.concat(response.subjects);
+                    this.load_flag = false;
+                }
+            });
+            this.start += 20;
+            this.loading = false;
+        }
+    }
 };
 
 // 我的详情页
