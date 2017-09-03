@@ -8,25 +8,22 @@
     <link rel="shortcut icon" href="./images/favicon_16x16.png" type="image/x-icon">
     <!-- 样式文件 -->
     <link rel="stylesheet" href="./css/style.css">
-    <!-- <link rel="stylesheet" href="https://unpkg.com/mint-ui/lib/style.css"> -->
     <link rel="stylesheet" href="./css/mint-ui.css">
     <!-- vue文件 -->
     <script src="https://cdn.staticfile.org/vue/2.2.6/vue.min.js"></script>
     <script src="https://cdn.staticfile.org/vuex/2.3.0/vuex.min.js"></script>
     <script src="https://cdn.staticfile.org/vue-router/2.4.0/vue-router.min.js"></script>
-    <!-- <script src="https://unpkg.com/mint-ui/lib/index.js"></script> -->
     <script src="./js/mint_ui.js"></script>
 </head>
 
 <body>
     <!-- 页面主体 -->
-    <div id="app" @click="hello">
-        <router-view></router-view>
-        <!-- <home></home> -->
-        <!-- <search></search> -->
-        <!-- <movie></movie> -->
-        <!-- <person></person> -->
-        <!-- <list></list> -->
+    <div id="app">
+        <transition name="slide">
+            <keep-alive>
+                <router-view></router-view>
+            </keep-alive>
+        </transition>
         <my-footer></my-footer>
     </div>
 

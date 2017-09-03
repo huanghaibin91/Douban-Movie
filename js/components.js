@@ -17,27 +17,27 @@ var home = {
             </div> 
             <div class="list-title">
                 <p>正在热映</p>
-                <router-link to="/list">更多</router-link>
+                <router-link to="/list" @click.native="sendMovieList('in_theaters')">更多</router-link>
             </div>
             <div class="swipe-box">
                 <mt-swipe :auto="4000">
                     <mt-swipe-item v-for="movie in banners">
-                        <div class="movie-banner">
-                            <div class="movie-banner-left">
+                        <router-link tag="div" to="/movie" class="banner" @click.native="sendMovie(movie.id)">
+                            <div class="banner-left">
                                 <img :src="movie.images.large" :alt="movie.title">
                             </div>
-                            <div class="movie-banner-right">
+                            <div class="banner-right">
                                 <p>{{ movie.title }}</p>
                                 <p>评分：<span>{{ movie.rating.average }}</sapn></p>
                                 <p>导演：{{ movie.directors[0].name }}</p>
                                 <p>类型：<span>{{ movie.genres.join('/') }}</sapn></p>
                             </div>
-                        </div>
+                        </router-link>
                     </mt-swipe-item>
                 </mt-swipe>
             </div>
-            <div class="movie-list">
-                <router-link tag="div" to="/movie" class="movie-list-box" v-for="movie in in_theaters">
+            <div class="content-list">
+                <router-link tag="div" to="/movie"  @click.native="sendMovie(movie.id)" class="content-list-box" v-for="movie in in_theaters">
                     <img :src="movie.images.medium" :alt="movie.title">
                     <p>{{ movie.title }}</p>
                     <p>
@@ -48,10 +48,10 @@ var home = {
             </div>
             <div class="list-title">
                 <p>即将上映</p>
-                <router-link to="/list">更多</router-link>
+                <router-link to="/list" @click.native="sendMovieList('coming_soon')">更多</router-link>
             </div>
-            <div class="movie-list">
-                <router-link tag="div" to="/movie" class="movie-list-box" v-for="movie in coming_soon">
+            <div class="content-list">
+                <router-link tag="div" to="/movie" @click.native="sendMovie(movie.id)" class="content-list-box" v-for="movie in coming_soon">
                     <img :src="movie.images.medium" :alt="movie.title">
                     <p>{{ movie.title}}</p>
                     <p>
@@ -90,6 +90,36 @@ var home = {
             }
         });
     },
+    methods: {
+        sendMovie: function (id) {
+            var that = this;
+            this.$jsonp({
+                url: 'https://api.douban.com/v2/movie/subject/' + id,
+                callback: function (response) {
+                    store.commit('getMovie', response);
+                }
+            });
+        },
+        sendMovieList: function (name) {
+            var that = this;
+            if (name === 'coming_soon') {
+                store.commit('getSearchVal', '即将上映');
+            } else {
+                store.commit('getSearchVal', '正在热映');
+            }
+            var url = 'https://api.douban.com/v2/movie/' + name
+            store.commit('getUrl', url);
+            this.$jsonp({
+                url: url,
+                // data: {
+                //     start: 20
+                // },
+                callback: function (response) {
+                    store.commit('getMovieList', response.subjects);
+                }
+            });
+        }
+    }
 };
 
 // 搜索页
@@ -97,11 +127,13 @@ var search = {
     template: `
         <div class="search">
             <div class="search-input">
-                <mt-search v-model="value" cancel-text="取消" placeholder="搜索"></mt-search>
+                <mt-search v-model="value" @keyup.enter.native="sendMovieList(true, value)" cancel-text="取消" placeholder="搜索"></mt-search>
             </div>
             <div class="tag-box">
                 <div class="tag" v-for="tag in tagArr">
-                    <mt-button type="primary">{{ tag }}</mt-button>
+                    <router-link to="/list">
+                        <mt-button type="primary" @click.native="sendMovieList(false, tag)">{{ tag }}</mt-button>
+                    </router-link>
                 </div>
             </div>
         </div>
@@ -112,6 +144,32 @@ var search = {
             tagArr: ['经典', '冷门佳片', '豆瓣高分', '动作', '喜剧', '爱情', '悬疑', '恐怖', '科幻', 
             '治愈', '文艺', '成长', '动画 ', '华语', '欧美', '韩国', '日本'],
         }
+    },
+    methods: {
+        sendMovieList: function (flag, val) {
+            var that = this;
+            var data = null;
+            var url  = 'https://api.douban.com/v2/movie/search?';
+            if (flag) {
+                data = {q: val};
+                url = url + 'q=' + encodeURIComponent(val);
+            } else {
+                data = {tag: val};
+                url = url + 'tag=' + encodeURIComponent(val);
+            }
+            store.commit('getSearchVal', val);
+            store.commit('getUrl', url);
+            this.$jsonp({
+                url: 'https://api.douban.com/v2/movie/search',
+                data: data,
+                callback: function (response) {
+                    store.commit('getMovieList', response.subjects);
+                }
+            });
+            router.push({
+                path: '/list'
+            });
+        }
     }
 };
 
@@ -120,14 +178,14 @@ var movie = {
     template: `
         <div class="movie">
             <mt-header :title="movie.title">
-                <mt-button icon="back" slot="left">返回</mt-button>
+                <mt-button @click.native="goBack" icon="back" slot="left">返回</mt-button>
                 <mt-button icon="more" slot="right"></mt-button>
             </mt-header> 
-            <div class="movie-banner">
-                <div class="movie-banner-left">
+            <div class="banner">
+                <div class="banner-left">
                     <img :src="movie.images.large" :alt="movie.title">
                 </div>
-                <div class="movie-banner-right">
+                <div class="banner-right">
                     <p>{{ movie.title}}</p>
                     <p>评分：<span>{{ movie.rating.average }}</sapn></p>
                     <p>导演：<span>{{ movie.directors[0].name }}</span></p>
@@ -141,37 +199,42 @@ var movie = {
             </div>
             <router-link tag="div" to="/person" class="movie-directors">
                 <h4>导演</h4>
-                <div class="movie-list">
-                    <div v-for="director in movie.directors">
+                <div class="content-list">
+                    <router-link tag="div" to="/person" @click.native="sendPerson(director.id)" v-for="director in movie.directors">
                         <img :src="director.avatars.medium" :alt="director.name">
                         <p>{{ director.name }}</p>
-                    </div>
+                    </router-link>
                 </div>
             </router-link>
-            <router-link tag="div" to="/person" class="movie-casts">
+            <div class="movie-casts">
                 <h4>主演</h4>
-                <div class="movie-list">
-                    <div class="movie-list-box" v-for="cast in movie.casts">
+                <div class="content-list">
+                    <router-link tag="div" to="/person" @click.native="sendPerson(cast.id)" class="movie-list-box" v-for="cast in movie.casts">
                         <img :src="cast.avatars.medium" :alt="cast.name">
                         <p>{{ cast.name }}</p>
-                    </div>
+                    </router-link>
                 </div>
-            </router-link>
+            </div>
         <div>
     `,
-    data: function () {
-        return {
-            movie: '',
+    computed: {
+        movie: function () {
+            return store.state.movie;
         }
     },
-    mounted: function () {
-        var that = this;
-        this.$jsonp({
-            url: 'https://api.douban.com/v2/movie/subject/1764796',
-            callback: function (response) {
-                that.movie = response;
-            }
-        });
+    methods: {
+        sendPerson: function (id) {
+            var that = this;
+            this.$jsonp({
+                url: 'https://api.douban.com/v2/movie/celebrity/' + id,
+                callback: function (response) {
+                    store.commit('getPerson', response);
+                }
+            });
+        },
+        goBack: function () {
+            router.go(-1);
+        }
     }
 };
 
@@ -180,14 +243,14 @@ var person = {
     template: `
         <div class="person">
             <mt-header :title="person.name">
-                <mt-button icon="back" slot="left">返回</mt-button>
+                <mt-button @click.native="goBack" icon="back" slot="left">返回</mt-button>
                 <mt-button icon="more" slot="right"></mt-button>
             </mt-header>
-            <div class="movie-banner">
-                <div class="movie-banner-left">
+            <div class="banner">
+                <div class="banner-left">
                     <img :src="person.avatars.medium" :alt="person.name">
                 </div>
-                <div class="movie-banner-right">
+                <div class="banner-right">
                     <p>{{ person.name }}</p>
                     <p>英文名：<span>{{ person.name_en }}</sapn></p>
                     <p>性别：{{ person.gender }}</p>
@@ -196,29 +259,34 @@ var person = {
             </div>
             <div class="works-list">
                 <h4>个人作品</h4>
-                <router-link tag="div" to="/movie" class="movie-list">
-                    <div class="movie-list-box" v-for="work in person.works">
+                <div class="content-list">
+                    <router-link tag="div" to="/movie" @click.native="sendMovie(work.subject.id)" class="contentlist-box" v-for="work in person.works">
                         <img :src="work.subject.images.medium" :alt="work.subject.title" />
                         <p>{{ work.subject.title }}</p>
                         <p>{{ work.roles[0] }}</p>
-                    <div>
+                    </router-link>
                 </div>
             </div>
-        </router-link>
+        </div>
     `,
-    data: function () {
-        return {
-            person: '',
+    computed: {
+        person: function () {
+            return store.state.person;
         }
     },
-    mounted: function () {
-        var that = this;
-        this.$jsonp({
-            url: 'https://api.douban.com/v2/movie/celebrity/1054395',
-            callback: function (response) {
-                that.person = response;
-            } 
-        });
+    methods: {
+        sendMovie: function (id) {
+            var that = this;
+            this.$jsonp({
+                url: 'https://api.douban.com/v2/movie/subject/' + id,
+                callback: function (response) {
+                    store.commit('getMovie', response);
+                }
+            });
+        },
+        goBack: function () {
+            router.go(-1);
+        }
     }
 };
 
@@ -226,38 +294,39 @@ var person = {
 var list = {
     template: `
         <div class="list">
-            <mt-header title="电影列表">
-                <mt-button icon="back" slot="left">返回</mt-button>
+            <mt-header :title="searchVal">
+                <mt-button @click.native="goBack" icon="back" slot="left">返回</mt-button>
                 <mt-button icon="more" slot="right"></mt-button>
             </mt-header>
-            <div class="movie-list" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
-                <div class="movie-list-box" v-for="movie in movie_list">
+            <div class="content-list" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
+                <router-link tag="div" to="/movie" @click.native="sendMovie(movie)" class="content-list-box" v-for="movie in movie_list">
                     <img :src="movie.images.medium" :alt="movie.title">
                     <p>{{ movie.title}}</p>
                     <p>
                         <span class="star-yellow" v-for="index in Math.round(movie.rating.average / 2)"></span>
                         <span class="star-white" v-for="index in (5 - Math.round(movie.rating.average / 2))"></span>
                     </p>
-                </div>
+                </router-link>
             </div>
             <mt-spinner v-if="load_flag" color="#26a2ff" type="triple-bounce"></mt-spinner>
         </div>
     `,
     data: function () {
         return {
-            movie_list: [],
             start: 20,
             load_flag: false
         }
     },
-    mounted: function () {
-        var that = this;
-        this.$jsonp({
-            url: 'https://api.douban.com/v2/movie/top250',
-            callback: function (response) {
-                that.movie_list = response.subjects;
-            }
-        });
+    computed: {
+        movie_list: function () {
+            return store.state.movieList;
+        },
+        url: function () {
+            return store.state.url;
+        },
+        searchVal: function () {
+            return store.state.searchVal;
+        }
     },
     methods: {
         loadMore: function () {
@@ -265,26 +334,24 @@ var list = {
             this.loading = true;
             this.load_flag = true;
             this.$jsonp({
-                url: 'https://api.douban.com/v2/movie/top250',
+                url: that.url,
                 data: {
                     start: that.start
                 },
                 callback: function (response) {
-                    that.movie_list = that.movie_list.concat(response.subjects);
+                    var movie_list = that.movie_list.concat(response.subjects);
+                    store.commit('getMovieList', movie_list);
                     this.load_flag = false;
                 }
             });
             this.start += 20;
             this.loading = false;
+        },
+        sendMovie: function (movie) {
+            store.commit('getMovie', movie);
+        },
+        goBack: function () {
+            router.go(-1);
         }
     }
 };
-
-// 我的详情页
-var me = {
-    template: `
-        <div class="me">
-            
-        </div>
-    `,
-}

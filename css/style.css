@@ -1,3 +1,10 @@
+/* 路由跳转 */
+.slide-enter, .slide-leave-to {
+    transform: translateX(-100%);
+}
+.slide-enter-active, .slide-leave-active {
+    transition: all 0.5s ease;
+}
 /* 页头 */
 header{
     margin-bottom: 1em;
@@ -88,39 +95,39 @@ footer a {
     height: 250px;
     margin-bottom: 1em;
 }
-.movie-banner {
+.banner {
     display: flex;
 }
-.movie-banner-left, .movie-banner-right {
+.banner-left, .banner-right {
     width: 50%;
     height: 100%;
 }
-.movie-banner-left {
+.banner-left {
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.movie-banner-left img {
+.banner-left img {
     width: 80%;
     height: 80%;
 }
-.movie-banner-right p:first-child {
+.banner-right p:first-child {
     font-size: 20px;
     font-weight: bold;
     letter-spacing: 0.15em;
 }
-.movie-banner-right p:nth-child(2) span {
+.banner-right p:nth-child(2) span {
     color: #F05522;
 }
-.movie-list {
+.content-list {
     display: flex;
     flex-wrap: wrap;
 }
-.movie-list>div {
+.content-list>div {
     width: 50%;
     text-align: center;
 }
-.movie-list>div p {
+.content-list>div p {
     text-align: center;
     font-size: 0.8em;
 }

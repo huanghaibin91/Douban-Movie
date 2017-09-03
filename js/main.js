@@ -33,9 +33,6 @@ Vue.prototype.$jsonp = function  (options) {
 
 new Vue({
     el: '#app',
-    data: {
-        
-    },
     store,
     router,
     components: {
@@ -45,10 +42,5 @@ new Vue({
         'person': person,
         'list': list,
         'my-footer': footer
-    },
-    methods: {
-        hello: function () {
-            console.log('测试');
-        }
     }
 });
