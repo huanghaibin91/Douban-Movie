@@ -73,7 +73,7 @@ footer a {
     justify-content: center;
     margin-top: 1em; 
 }
-/*  */
+
 .list-title{
     display: flex;
     align-items: center;
@@ -107,11 +107,15 @@ footer a {
     width: 50%;
     height: 100%;
     font-size: 0.9em;
-}
-.banner-left {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
+    align-content: center;
+}
+.banner-right p {
+    width: 100%;
+    margin: 0.5em;
 }
 .banner-left img {
     width: 36vw;
