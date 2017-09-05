@@ -4,7 +4,7 @@ const store =  new Vuex.Store({
         person: {},
         movieList: [],
         url: '',
-        getSearchVal: ''
+        searchVal: ''
     },
     mutations: {
         getMovie: function (state, movie) {
