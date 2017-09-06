@@ -60,36 +60,40 @@ var home = {
                     </p>
                 </div>
             </div>
+            <mt-spinner v-if="loadingFlag" class="home-loading" :size="50" color="#26a2ff" type="fading-circle"></mt-spinner>
             <h-footer></h-footer>
         </div>
     `,
     data: function () {
         return {
-            banners: [],
-            in_theaters: [],
-            coming_soon: [],            
+            in_theaters_response: [],
+            coming_soon: [],
+            loadingFlag: true
         }
     },
-    created: function () {
+    mounted: function () {
         var that = this;
         this.$jsonp({
             url: 'https://api.douban.com/v2/movie/in_theaters',
             callback: function (response) {
-                that.banners = response.subjects.slice(0, 4);
-            }
-        });
-        this.$jsonp({
-            url: 'https://api.douban.com/v2/movie/in_theaters',
-            callback: function (response) {
-                that.in_theaters = response.subjects.slice(4);
+                that.in_theaters_response = response.subjects;
             }
         });
         this.$jsonp({
             url: 'https://api.douban.com/v2/movie/coming_soon',
             callback: function (response) {
-                that.coming_soon = response.subjects.slice(0, 20);
+                that.coming_soon = response.subjects;
+                that.loadingFlag = false;
             }
         });
+    },
+    computed: {
+        banners: function () {
+            return this.in_theaters_response.slice(0, 4);
+        },
+        in_theaters: function () {
+            return this.in_theaters_response.slice(4);
+        } 
     },
     methods: {
         sendMovie: function (id) {
