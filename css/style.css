@@ -166,6 +166,9 @@ footer a {
     width: 33.333%;
     text-align: center;
 }
+.tag:nth-of-type(16), .tag:nth-of-type(17) {
+    width: 50%;
+}
 .tag a {
     display: block;
     margin: 2vh;
