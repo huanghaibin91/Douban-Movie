@@ -198,7 +198,7 @@ var movie = {
                     <p>评分：<span>{{ movie.rating.average }}</sapn></p>
                     <p>导演：<span>{{ movie.directors[0].name }}</span></p>
                     <p>类型：<span>{{ movie.genres.join('/') }}</sapn></p>
-                    <p>主演：<span>{{ movie.casts[0].name}}</span></p>
+                    <p>上映时间：<span>{{ movie.year }}</span></p>
                 </div>
             </div>
             <div class="movie-summary">
@@ -269,7 +269,7 @@ var person = {
                 </div>
                 <div class="banner-right">
                     <p>{{ person.name }}</p>
-                    <p>英文名：<span>{{ person.name_en }}</sapn></p>
+                    <p>英文名：<span>{{ person.name_en }}</span></p>
                     <p>性别：{{ person.gender }}</p>
                     <p>出生地：<span>{{ person.born_place }}</sapn></p>
                 </div>
@@ -294,6 +294,7 @@ var person = {
     },
     methods: {
         sendMovie: function (id) {
+            console.log(id);
             var that = this;
             this.$jsonp({
                 url: 'https://api.douban.com/v2/movie/subject/' + id,
