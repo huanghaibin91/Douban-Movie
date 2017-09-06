@@ -24,7 +24,7 @@ var home = {
                     <mt-swipe-item v-for="movie in banners">
                         <div class="banner" @click="sendMovie(movie.id)">
                             <div class="banner-left">
-                                <img :src="movie.images | imgFilter" :alt="movie.title">
+                                <img :src="movie.images.large" :alt="movie.title">
                             </div>
                             <div class="banner-right">
                                 <p>{{ movie.title }}</p>
@@ -38,7 +38,7 @@ var home = {
             </div>
             <div class="content-list">
                 <div @click="sendMovie(movie.id)" class="content-list-box" v-for="movie in in_theaters">
-                    <img :src="movie.images | imgFilter" :alt="movie.title">
+                    <img :src="movie.images.large" :alt="movie.title">
                     <p>{{ movie.title }}</p>
                     <p>
                         <span class="star-yellow" v-for="index in Math.round(movie.rating.average / 2)"></span>
@@ -52,7 +52,7 @@ var home = {
             </div>
             <div class="content-list">
                 <div @click="sendMovie(movie.id)" class="content-list-box" v-for="movie in coming_soon">
-                    <img :src="movie.images | imgFilter" :alt="movie.title">
+                    <img :src="movie.images.large" :alt="movie.title">
                     <p>{{ movie.title}}</p>
                     <p>
                         <span class="star-yellow" v-for="index in Math.round(movie.rating.average / 2)"></span>
@@ -104,7 +104,7 @@ var home = {
                     store.commit('getMovie', response);
                     router.push({
                         path: '/movie/' + id
-                    })
+                    });
                 }
             });
         },
@@ -195,7 +195,7 @@ var movie = {
             </mt-header> 
             <div class="banner">
                 <div class="banner-left">
-                    <img :src="movie.images | imgFilter" :alt="movie.title">
+                    <img :src="movie.images.large" :alt="movie.title">
                 </div>
                 <div class="banner-right">
                     <p>{{ movie.title}}</p>
@@ -213,7 +213,7 @@ var movie = {
                 <h4>导演</h4>
                 <div class="content-list">
                     <div @click="sendPerson(director.id)" v-for="director in movie.directors">
-                        <img :src="director.avatars | imgFilter" :alt="director.name">
+                        <img :src="director.avatars.large" :alt="director.name">
                         <p>{{ director.name }}</p>
                     </div>
                 </div>
@@ -222,7 +222,7 @@ var movie = {
                 <h4>主演</h4>
                 <div class="content-list">
                     <div @click="sendPerson(cast.id)" class="movie-list-box" v-for="cast in movie.casts">
-                        <img :src="cast.avatars | imgFilter" :alt="cast.name">
+                        <img :src="cast.avatars.large" :alt="cast.name">
                         <p>{{ cast.name }}</p>
                     </div>
                 </div>
@@ -269,7 +269,7 @@ var person = {
             </mt-header>
             <div class="banner">
                 <div class="banner-left">
-                    <img :src="person.avatars | imgFilter" :alt="person.name">
+                    <img :src="person.avatars.large" :alt="person.name">
                 </div>
                 <div class="banner-right">
                     <p>{{ person.name }}</p>
@@ -282,7 +282,7 @@ var person = {
                 <h4>个人作品</h4>
                 <div class="content-list">
                     <div @click="sendMovie(work.subject.id)" class="contentlist-box" v-for="work in person.works">
-                        <img :src="work.subject.images | imgFilter" :alt="work.subject.title" />
+                        <img :src="work.subject.images.large" :alt="work.subject.title" />
                         <p>{{ work.subject.title }}</p>
                         <p>{{ work.roles[0] }}</p>
                     </div>
@@ -298,7 +298,6 @@ var person = {
     },
     methods: {
         sendMovie: function (id) {
-            console.log(id);
             var that = this;
             this.$jsonp({
                 url: 'https://api.douban.com/v2/movie/subject/' + id,
@@ -331,7 +330,7 @@ var list = {
             </mt-header>
             <div class="content-list" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="500">
                 <div @click="sendMovie(movie.id)" class="content-list-box" v-for="movie in movie_list">
-                    <img :src="movie.images | imgFilter" :alt="movie.title">
+                    <img :src="movie.images.large" :alt="movie.title">
                     <p>{{ movie.title}}</p>
                     <p>
                         <span class="star-yellow" v-for="index in Math.round(movie.rating.average / 2)"></span>

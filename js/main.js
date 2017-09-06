@@ -31,17 +31,6 @@ Vue.prototype.$jsonp = function  (options) {
     head.appendChild(script);
 };
 
-//注册全局过滤器处理图片地址
-Vue.filter('imgFilter', function (images) {
-    if (images.large) {
-        return images.large;
-    } else if (images.medium) {
-        return images.medium;
-    } else {
-        return images.small;
-    }
-});
-
 new Vue({
     el: '#app',
     store,
