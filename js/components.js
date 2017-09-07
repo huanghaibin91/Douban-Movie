@@ -20,7 +20,7 @@ var home = {
                 <a @click="sendMovieList('in_theaters')">更多</a>
             </div>
             <div class="swipe-box">
-                <mt-swipe :auto="4000">
+                <mt-swipe :auto="3000">
                     <mt-swipe-item v-for="movie in banners">
                         <div class="banner" @click="sendMovie(movie.id)">
                             <div class="banner-left">
@@ -93,7 +93,7 @@ var home = {
         },
         in_theaters: function () {
             return this.in_theaters_response.slice(4);
-        } 
+        }
     },
     methods: {
         sendMovie: function (id) {
@@ -149,24 +149,30 @@ var search = {
     data: function () {
         return {
             value: '',
-            tagArr: ['经典', '动作', '喜剧', '爱情', '悬疑', '恐怖', '科幻', 
-            '治愈', '文艺', '成长', '动画 ', '华语', '欧美', '韩国', '日本', '冷门佳片', '豆瓣高分'],
-            colorArr: ['rgb(35, 132, 232)', 'rgb(122, 106, 219)', 'rgb(159, 120, 96)', 'rgb(230, 70, 126)', 
-            'rgb(42, 184, 204)', 'rgb(42, 184, 204)', 'rgb(244, 143, 46)', 'rgb(159, 120, 96)', 'rgb(87, 116, 197)', 
-            'rgb(225, 100, 77)', 'rgb(89, 108, 221)', 'rgb(64, 207, 169)', 'rgb(122, 106, 219)', 'rgb(66, 189, 86)',
-            'rgb(230, 70, 126)', 'rgb(244, 143, 46)', 'rgb(42, 184, 204)']
+            tagArr: ['经典', '动作', '喜剧', '爱情', '悬疑', '恐怖', '科幻',
+                '治愈', '文艺', '成长', '动画 ', '华语', '欧美', '韩国', '日本', '冷门佳片', '豆瓣高分'
+            ],
+            colorArr: ['rgb(35, 132, 232)', 'rgb(122, 106, 219)', 'rgb(159, 120, 96)', 'rgb(230, 70, 126)',
+                'rgb(42, 184, 204)', 'rgb(42, 184, 204)', 'rgb(244, 143, 46)', 'rgb(159, 120, 96)', 'rgb(87, 116, 197)',
+                'rgb(225, 100, 77)', 'rgb(89, 108, 221)', 'rgb(64, 207, 169)', 'rgb(122, 106, 219)', 'rgb(66, 189, 86)',
+                'rgb(230, 70, 126)', 'rgb(244, 143, 46)', 'rgb(42, 184, 204)'
+            ]
         }
     },
     methods: {
         sendMovieList: function (flag, val) {
             var that = this;
             var data = null;
-            var url  = 'https://api.douban.com/v2/movie/search?';
+            var url = 'https://api.douban.com/v2/movie/search?';
             if (flag) {
-                data = {q: val};
+                data = {
+                    q: val
+                };
                 url = url + 'q=' + encodeURIComponent(val);
             } else {
-                data = {tag: val};
+                data = {
+                    tag: val
+                };
                 url = url + 'tag=' + encodeURIComponent(val);
             }
             store.commit('getSearchVal', val);
@@ -189,44 +195,46 @@ var search = {
 var movie = {
     template: `
         <div class="movie">
-            <mt-header :title="movie.title">
+            <mt-header fixed :title="movie.title">
                 <mt-button @click.native="goBack" icon="back" slot="left">返回</mt-button>
                 <mt-button @click.native="goHome" icon="more" slot="right"></mt-button>
-            </mt-header> 
-            <div class="banner">
-                <div class="banner-left">
-                    <img :src="movie.images.large" :alt="movie.title">
-                </div>
-                <div class="banner-right">
-                    <p>{{ movie.title}}</p>
-                    <p>评分：<span>{{ movie.rating.average }}</sapn></p>
-                    <p>导演：<span>{{ movie.directors[0].name }}</span></p>
-                    <p>类型：<span>{{ movie.genres.join('/') }}</sapn></p>
-                    <p>上映时间：<span>{{ movie.year }}</span></p>
-                </div>
-            </div>
-            <div class="movie-summary">
-                <h4>剧情简介</h4>
-                <p>{{ movie.summary }}</p>
-            </div>
-            <div class="movie-directors">
-                <h4>导演</h4>
-                <div class="content-list">
-                    <div @click="sendPerson(director.id)" v-for="director in movie.directors">
-                        <img :src="director.avatars.large" :alt="director.name">
-                        <p>{{ director.name }}</p>
+            </mt-header>
+            <div class="content-box"> 
+                <div class="banner">
+                    <div class="banner-left">
+                        <img :src="movie.images.large" :alt="movie.title">
+                    </div>
+                    <div class="banner-right">
+                        <p>{{ movie.title}}</p>
+                        <p>评分：<span>{{ movie.rating.average }}</sapn></p>
+                        <p>导演：<span>{{ movie.directors[0].name }}</span></p>
+                        <p>类型：<span>{{ movie.genres.join('/') }}</sapn></p>
+                        <p>上映时间：<span>{{ movie.year }}</span></p>
                     </div>
                 </div>
-            </div>
-            <div class="movie-casts">
-                <h4>主演</h4>
-                <div class="content-list">
-                    <div @click="sendPerson(cast.id)" class="movie-list-box" v-for="cast in movie.casts">
-                        <img :src="cast.avatars.large" :alt="cast.name">
-                        <p>{{ cast.name }}</p>
+                <div class="movie-summary">
+                    <h4>剧情简介</h4>
+                    <p>{{ movie.summary }}</p>
+                </div>
+                <div class="movie-directors">
+                    <h4>导演</h4>
+                    <div class="content-list">
+                        <div @click="sendPerson(director.id)" v-for="director in movie.directors">
+                            <img :src="director.avatars.large" :alt="director.name">
+                            <p>{{ director.name }}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
+                <div class="movie-casts">
+                    <h4>主演</h4>
+                    <div class="content-list">
+                        <div @click="sendPerson(cast.id)" class="movie-list-box" v-for="cast in movie.casts">
+                            <img :src="cast.avatars.large" :alt="cast.name">
+                            <p>{{ cast.name }}</p>
+                        </div>
+                    </div>
+                </div>
+            <div>
             <h-footer></h-footer>
         <div>
     `,
@@ -263,28 +271,30 @@ var movie = {
 var person = {
     template: `
         <div class="person">
-            <mt-header :title="person.name">
+            <mt-header fixed :title="person.name">
                 <mt-button @click.native="goBack" icon="back" slot="left">返回</mt-button>
                 <mt-button @click.native="goHome" icon="more" slot="right"></mt-button>
             </mt-header>
-            <div class="banner">
-                <div class="banner-left">
-                    <img :src="person.avatars.large" :alt="person.name">
+            <div class="content-box">
+                <div class="banner">
+                    <div class="banner-left">
+                        <img :src="person.avatars.large" :alt="person.name">
+                    </div>
+                    <div class="banner-right">
+                        <p>{{ person.name }}</p>
+                        <p>英文名：<span>{{ person.name_en }}</span></p>
+                        <p>性别：{{ person.gender }}</p>
+                        <p>出生地：<span>{{ person.born_place }}</sapn></p>
+                    </div>
                 </div>
-                <div class="banner-right">
-                    <p>{{ person.name }}</p>
-                    <p>英文名：<span>{{ person.name_en }}</span></p>
-                    <p>性别：{{ person.gender }}</p>
-                    <p>出生地：<span>{{ person.born_place }}</sapn></p>
-                </div>
-            </div>
-            <div class="works-list">
-                <h4>个人作品</h4>
-                <div class="content-list">
-                    <div @click="sendMovie(work.subject.id)" class="contentlist-box" v-for="work in person.works">
-                        <img :src="work.subject.images.large" :alt="work.subject.title" />
-                        <p>{{ work.subject.title }}</p>
-                        <p>{{ work.roles[0] }}</p>
+                <div class="works-list">
+                    <h4>个人作品</h4>
+                    <div class="content-list">
+                        <div @click="sendMovie(work.subject.id)" class="contentlist-box" v-for="work in person.works">
+                            <img :src="work.subject.images.large" :alt="work.subject.title" />
+                            <p>{{ work.subject.title }}</p>
+                            <p>{{ work.roles[0] }}</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -324,28 +334,31 @@ var person = {
 var list = {
     template: `
         <div class="list">
-            <mt-header :title="searchVal">
+            <mt-header fixed :title="searchVal">
                 <mt-button @click.native="goBack" icon="back" slot="left">返回</mt-button>
                 <mt-button @click.native="goHome" icon="more" slot="right"></mt-button>
             </mt-header>
-            <div class="content-list" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="500">
-                <div @click="sendMovie(movie.id)" class="content-list-box" v-for="movie in movie_list">
-                    <img :src="movie.images.large" :alt="movie.title">
-                    <p>{{ movie.title}}</p>
-                    <p>
-                        <span class="star-yellow" v-for="index in Math.round(movie.rating.average / 2)"></span>
-                        <span class="star-white" v-for="index in (5 - Math.round(movie.rating.average / 2))"></span>
-                    </p>
+            <div class="content-box">
+                <div class="content-list" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="20">
+                    <div @click="sendMovie(movie.id)" class="content-list-box" v-for="movie in movie_list">
+                        <img :src="movie.images.large" :alt="movie.title">
+                        <p>{{ movie.title}}</p>
+                        <p>
+                            <span class="star-yellow" v-for="index in Math.round(movie.rating.average / 2)"></span>
+                            <span class="star-white" v-for="index in (5 - Math.round(movie.rating.average / 2))"></span>
+                        </p>
+                    </div>
                 </div>
+                <mt-spinner v-if="load_flag" color="#26a2ff" type="triple-bounce"></mt-spinner>
             </div>
-            <mt-spinner v-if="load_flag" color="#26a2ff" type="triple-bounce"></mt-spinner>
             <h-footer></h-footer>
         </div>
     `,
     data: function () {
         return {
             start: 20,
-            load_flag: false
+            load_flag: false,
+            infinite_flag: true
         }
     },
     computed: {
@@ -361,25 +374,29 @@ var list = {
     },
     methods: {
         loadMore: function () {
-            console.log('hello');
             var that = this;
-            this.loading = true;
-            this.load_flag = true;
-            setTimeout(function () {
-                that.$jsonp({
-                    url: that.url,
-                    data: {
-                        start: that.start
-                    },
-                    callback: function (response) {
-                        var movie_list = that.movie_list.concat(response.subjects);
-                        store.commit('getMovieList', movie_list);
-                        that.load_flag = false;
-                        this.start += 20;
-                        this.loading = false;
-                    }
-                });
-            }, 2500)
+            if (this.infinite_flag) {
+                this.load_flag = true;
+                setTimeout(function () {
+                    that.$jsonp({
+                        url: that.url,
+                        data: {
+                            start: that.start
+                        },
+                        callback: function (response) {
+                            if (response.subjects.length !== 0) {
+                                var movie_list = that.movie_list.concat(response.subjects);
+                                store.commit('getMovieList', movie_list);
+                                that.load_flag = false;
+                                that.start += 20;
+                            } else {
+                                that.load_flag = false;
+                                that.infinite_flag = false;
+                            }
+                        }
+                    });
+                }, 3000)
+            }
         },
         sendMovie: function (id) {
             var that = this;

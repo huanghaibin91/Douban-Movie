@@ -37,6 +37,9 @@ header{
     background:  url('../images/search.png') no-repeat center;
     background-size: contain;
 }
+.content-box {
+    margin-top: 3em;
+}
 /* 页脚 */
 footer {
     text-align: center;
