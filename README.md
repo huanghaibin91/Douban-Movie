@@ -1,6 +1,6 @@
 # Douban-Movie #
 
-一个简单的仿豆瓣移动端电影介绍网页，觉得不错可以[star一下](https://github.com/huanghaibin91/Douban-Movie)
+一个简单的移动端电影介绍网页，觉得不错可以[star一下](https://github.com/huanghaibin91/Douban-Movie)
 
 因为是公共API对访问次数有限制，所以不要频繁点击
 
